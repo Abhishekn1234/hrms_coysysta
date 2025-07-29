@@ -1,0 +1,31 @@
+.custom-modal-content {
+  border-radius: 10px;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  max-height: 90vh;
+}
+
+.modal-header {
+  padding: 1rem 1.5rem;
+  border-bottom: none;
+}
+
+.modal-title {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  background-color: #fff;
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  border-top: none;
+}

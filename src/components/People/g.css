@@ -1,0 +1,11 @@
+.square-modal .modal-dialog {
+  width: 500px;         /* Customize width */
+  height: 500px;        /* Equal height to make it square */
+  max-width: 90vw;      /* Responsive limit */
+}
+
+.square-modal .modal-content {
+  height: 100%;
+  border-radius: 10px;   /* Optional: soft rounded corners */
+  padding: 10px;         /* Optional padding */
+}

@@ -1,0 +1,27 @@
+  
+  
+  
+  
+  {showBenefitsModal && (
+  <BenefitsModal
+    show={showBenefitsModal}
+    handleClose={() => setShowBenefitsModal(false)}
+    benefitItems={benefitItems}
+  />
+)}
+
+
+
+
+
+
+const [showBenefitsModal, setShowBenefitsModal] = useState(false);
+
+
+<Button
+                    variant="outline-success"
+                    size="sm"
+                    onClick={() => setShowBenefitsModal(true)}
+                  >
+                    <FaGift className="me-1" />
+                  </Button>

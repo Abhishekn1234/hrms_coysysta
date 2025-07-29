@@ -1,0 +1,38 @@
+/* Payslip Print Styling */
+.payslip-pdf-container {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: white;
+  color: #000;
+}
+
+.payslip-pdf-container h6 {
+  font-size: 15px;
+  font-weight: 600;
+  border-color: #ccc;
+}
+
+.payslip-pdf-container ul li {
+  font-size: 14px;
+  padding: 2px 0;
+}
+
+@media print {
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print,
+  .modal-footer,
+  .modal-header {
+    display: none !important;
+  }
+
+  .modal-content,
+  .payslip-pdf-container {
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+  }
+}

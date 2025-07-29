@@ -1,0 +1,26 @@
+/* Align icon and text */
+.tab-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 12px;
+
+}
+
+/* Optional: tweak icon size */
+.tab-icon {
+  font-size: 16px;
+}
+
+/* Improve tabs spacing and layout */
+.custom-tabs .nav-link {
+  padding: 0.5rem 1rem;
+
+}
+
+.custom-tabs .nav-link.active {
+  background-color: #f1f3f5;
+  color: #000;
+  font-weight: 600;
+}

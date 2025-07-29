@@ -1,0 +1,155 @@
+.org-card {
+  width: 340px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  height: 100vh;
+  min-height: 1050px;
+  overflow-y: auto;
+}
+.square-modal .modal-dialog {
+  width: 800px;
+  height: 800px;
+  max-width: none;
+  margin: auto;
+}
+
+.square-modal-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.org-body {
+  padding: 15px;
+}
+
+.org-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.org-icon {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #003366;
+}
+
+.org-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 18px;
+  color: #003366;
+}
+
+.org-ceo {
+  background-color: #003366;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  height: 42px;
+  display: flex;
+  align-items: center;
+}
+
+.org-department-wrapper {
+  position: relative;
+  margin-bottom: 30px;
+  padding-left: 20px;
+}
+
+.org-department-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10px;
+  bottom: 0;
+  width: 2px;
+  background-color: #ccc;
+}
+
+.org-department {
+  background-color: #e6f2ff;
+  color: #003366;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  border-left: 3px solid #003366;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  position: relative;
+}
+
+.org-teams {
+  padding-left: 40px;
+  margin-top: 10px;
+}
+
+.org-team {
+  background-color: #f8f9fa;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  border-left: 2px solid #ddd;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-left: 20px;
+}
+
+.org-team::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  width: 20px;
+  height: 2px;
+  background-color: #ccc;
+}
+
+.org-btn {
+  width: 100%;
+  border-color: #003366;
+  color: #003366;
+  font-weight: 500;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Default department style */
+.org-department {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  border-left: 3px solid #003366;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  position: relative;
+  color: #003366;
+  background-color: #e6f2ff;
+}
+
+/* Department-specific overrides */
+.dept-technology {
+  background-color: #cfe2ff;
+}
+
+.dept-sales-&-marketing {
+  background-color: #fce5cd;
+}
+
+.dept-operations {
+  background-color: #d9ead3;
+}

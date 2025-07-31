@@ -31,15 +31,7 @@ const handleResetFilters = () => {
   setSearch("");
 };
 
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Punching Report");
 
-    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-    const dataBlob = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(dataBlob, "Punching_Report.xlsx");
-  };
   const formatTime = (timeStr, label = "Check-in") => {
   if (!timeStr || timeStr === '00:00:00') {
     return `No ${label.toLowerCase()} found`;
@@ -69,7 +61,31 @@ const formatDuration = (timeStr) => {
   return parts.length > 0 ? parts.join(' ') : '0';
 };
 
+const exportToExcel = () => {
+  const exportData = data.map((row) => ({
+    ID: row.id,
+    Name: row.name
+      ? row.name
+      : row.first_name && row.last_name
+      ? `${row.first_name} ${row.last_name}`
+      : "No user name found",
+    "Check-In": row.checkIn
+      ? formatTime(row.checkIn)
+      : "No check-in found",
+    "Check-Out": row.checkOut
+      ? formatTime(row.checkOut)
+      : "No check-out found",
+    "Daily Working Hours": formatDuration(row.hours),
+  }));
 
+  const worksheet = XLSX.utils.json_to_sheet(exportData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Punching Report");
+
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  const dataBlob = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(dataBlob, "Punching_Report.xlsx");
+};
   return (
     <div style={{ padding: "1.5rem", fontFamily: "Arial, sans-serif" }}>
       {/* Filters */}

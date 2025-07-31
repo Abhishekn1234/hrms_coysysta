@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Save } from "lucide-react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
@@ -6,19 +7,32 @@ import { saveAs } from "file-saver";
 export default function Punching() {
   const [search, setSearch] = useState("");
   const [date, setDate] = useState("");
+  const [data, setData] = useState([]);
 
-  const data = [
-    { id: 1, name: "John Doe", checkIn: "09:00 AM", checkOut: "05:00 PM", hours: 8 },
-    { id: 2, name: "Jane Smith", checkIn: "09:30 AM", checkOut: "06:00 PM", hours: 8.5 },
-    { id: 3, name: "Mike Johnson", checkIn: "10:00 AM", checkOut: "04:30 PM", hours: 6.5 }
-  ];
+  useEffect(() => {
+    fetchPunchingData();
+  }, [search, date]);
 
-  const filteredData = data.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const fetchPunchingData = async () => {
+    try {
+      const res = await axios.get("http://127.0.0.1:8000/api/v1/punching-report", {
+        params: {
+          search,
+          date,
+        },
+      });
+      setData(res.data);
+    } catch (err) {
+      console.error("Error fetching punching report", err);
+    }
+  };
+const handleResetFilters = () => {
+  setDate("");
+  setSearch("");
+};
 
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+    const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Punching Report");
 
@@ -26,56 +40,123 @@ export default function Punching() {
     const dataBlob = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(dataBlob, "Punching_Report.xlsx");
   };
+  const formatTime = (timeStr, label = "Check-in") => {
+  if (!timeStr || timeStr === '00:00:00') {
+    return `No ${label.toLowerCase()} found`;
+  }
+
+  const [hours, minutes, seconds] = timeStr.split(':');
+  const date = new Date();
+  date.setHours(Number(hours), Number(minutes), Number(seconds || 0));
+  
+  return date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+};
+
+const formatDuration = (timeStr) => {
+  if (!timeStr) return '0';
+
+  const [h, m, s] = timeStr.split(':').map(Number);
+
+  const parts = [];
+  if (h > 0) parts.push(`${h} hr`);
+  if (m > 0) parts.push(`${m} min`);
+  if (s > 0) parts.push(`${s} sec`);
+
+  return parts.length > 0 ? parts.join(' ') : '0';
+};
+
 
   return (
     <div style={{ padding: "1.5rem", fontFamily: "Arial, sans-serif" }}>
       {/* Filters */}
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
-       <div style={{ display: "flex", gap: "1rem", width: "100%", maxWidth: "500px", marginBottom: "1rem" }}>
-  <input
-    type="date"
-    value={date}
-    onChange={(e) => setDate(e.target.value)}
+     <div
+  style={{
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "1rem",
+    marginBottom: "1rem",
+    maxWidth: "100%",
+  }}
+>
+  {/* Date & Search Inputs */}
+  <div
     style={{
+      display: "flex",
+      gap: "1rem",
       flex: "1",
-      minWidth: "140px",
-      padding: "0.4rem",
-      borderRadius: "4px",
-      border: "1px solid #ccc"
+      minWidth: "0",
     }}
-  />
-  <input
-    type="text"
-    placeholder="Search by name"
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-    style={{
-      flex: "2",
-      minWidth: "200px",
-      padding: "0.4rem",
-      borderRadius: "4px",
-      border: "1px solid #ccc"
-    }}
-  />
+  >
+    <input
+      type="date"
+      value={date}
+      onChange={(e) => setDate(e.target.value)}
+      style={{
+        flex: "1",
+        minWidth: "200px",
+        padding: "0.4rem",
+        borderRadius: "4px",
+        border: "1px solid #ccc",
+      }}
+    />
+    <input
+      type="text"
+      placeholder="Search by name"
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      style={{
+        flex: "2",
+        minWidth: "250px",
+        padding: "0.4rem",
+        borderRadius: "4px",
+        border: "1px solid #ccc",
+      }}
+    />
+  </div>
+
+  {/* Buttons */}
+  <div style={{ display: "flex", gap: "0.5rem", flexShrink: 0 }}>
+    <button
+      onClick={exportToExcel}
+      style={{
+        backgroundColor: "#0d6efd",
+        color: "#fff",
+        padding: "0.5rem 1rem",
+        border: "none",
+        borderRadius: "4px",
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+        whiteSpace: "nowrap",
+        fontSize: "0.875rem",
+      }}
+    >
+      <Save size={16} /> <span>Download XLSX</span>
+    </button>
+
+    <button
+      onClick={handleResetFilters}
+      style={{
+        backgroundColor: "#6c757d",
+        color: "#fff",
+        padding: "0.5rem 1rem",
+        border: "none",
+        borderRadius: "4px",
+        whiteSpace: "nowrap",
+        fontSize: "0.875rem",
+      }}
+    >
+      Reset Filters
+    </button>
+  </div>
 </div>
 
-        <button
-          onClick={exportToExcel}
-          style={{
-            backgroundColor: "#0d6efd",
-            color: "#fff",
-            padding: "0.5rem 1rem",
-            border: "none",
-            borderRadius: "4px",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            cursor: "pointer"
-          }}
-        >
-          <Save size={16} /> Download XLSX
-        </button>
-      </div>
 
       {/* Table */}
       <table
@@ -83,7 +164,7 @@ export default function Punching() {
           width: "100%",
           borderCollapse: "collapse",
           backgroundColor: "#fff",
-          border: "1px solid #dee2e6"
+          border: "1px solid #dee2e6",
         }}
       >
         <thead style={{ backgroundColor: "#f8f9fa" }}>
@@ -95,25 +176,33 @@ export default function Punching() {
             <th style={thStyle}>Daily Working Hours</th>
           </tr>
         </thead>
-        <tbody>
-          {filteredData.length > 0 ? (
-            filteredData.map((row, index) => (
-              <tr key={index}>
-                <td style={tdStyle}>{row.id}</td>
-                <td style={tdStyle}>{row.name}</td>
-                <td style={tdStyle}>{row.checkIn}</td>
-                <td style={tdStyle}>{row.checkOut}</td>
-                <td style={tdStyle}>{row.hours}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="5" style={{ textAlign: "center", padding: "1rem", color: "#888" }}>
-                No records found.
-              </td>
-            </tr>
-          )}
-        </tbody>
+       <tbody>
+  {data.length > 0 ? (
+    data.map((row, index) => (
+      <tr key={index}>
+        <td style={tdStyle}>{row.id}</td>
+        <td style={tdStyle}>
+  {row.name
+    ? row.name
+    : row.first_name && row.last_name
+    ? `${row.first_name} ${row.last_name}`
+    : "No user name found"}
+</td>
+
+        <td style={tdStyle}>{formatTime(row.checkIn)}</td>
+        <td style={tdStyle}>{formatTime(row.checkOut)}</td>
+        <td style={tdStyle}>{formatDuration(row.hours)}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="5" style={{ textAlign: "center", padding: "1rem", color: "#888" }}>
+        No records found.
+      </td>
+    </tr>
+  )}
+</tbody>
+
       </table>
     </div>
   );
@@ -123,11 +212,11 @@ const thStyle = {
   padding: "0.75rem",
   border: "1px solid #dee2e6",
   textAlign: "left",
-  fontWeight: "bold"
+  fontWeight: "bold",
 };
 
 const tdStyle = {
   padding: "0.75rem",
   border: "1px solid #dee2e6",
-  textAlign: "left"
+  textAlign: "left",
 };

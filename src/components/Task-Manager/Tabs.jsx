@@ -18,7 +18,12 @@ export default function TabsComponent() {
   const tabs = [
     { key: "Projects", label: "Projects", icon: <FolderKanban size={16} />, component: <Projects /> },
     { key: "Tasks", label: "Tasks", icon: <CheckSquare size={16} />, component: <Tasks /> },
-    { key: "Backlogs", label: "Backlogs", icon: <ClipboardList size={16} />, component: <Backlog /> },
+        { 
+        key: "Backlogs", 
+        label: "Backlogs", 
+        icon: <ClipboardList size={16} />, 
+        component: <Backlog setActiveTab={setActiveTab} /> 
+      },
     { key: "Salary Report", label: "Salary Report", icon: <Receipt size={16} />, component: <Salary /> },
     { key: "Punching Report", label: "Punching Report", icon: <Clock size={16} />, component: <Punching /> }
   ];

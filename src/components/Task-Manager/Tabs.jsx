@@ -4,29 +4,31 @@ import {
   CheckSquare,
   ClipboardList,
   Receipt,
-  Clock
+  Clock,FileText
 } from "lucide-react";
 import Projects from "./Projects";
 import Tasks from "./Tasks";
 import Backlog from "./Backlog";
 import Salary from "./Salary";
 import Punching from "./Punching";
+import TaskReport from "./TaskReport";
 
 export default function TabsComponent() {
   const [activeTab, setActiveTab] = useState("Projects");
 
   const tabs = [
-    { key: "Projects", label: "Projects", icon: <FolderKanban size={16} />, component: <Projects /> },
-    { key: "Tasks", label: "Tasks", icon: <CheckSquare size={16} />, component: <Tasks /> },
-        { 
-        key: "Backlogs", 
-        label: "Backlogs", 
-        icon: <ClipboardList size={16} />, 
-        component: <Backlog setActiveTab={setActiveTab} /> 
-      },
-    { key: "Salary Report", label: "Salary Report", icon: <Receipt size={16} />, component: <Salary /> },
-    { key: "Punching Report", label: "Punching Report", icon: <Clock size={16} />, component: <Punching /> }
-  ];
+  { key: "Projects", label: "Projects", icon: <FolderKanban size={16} />, component: <Projects /> },
+  { key: "Tasks", label: "Tasks", icon: <CheckSquare size={16} />, component: <Tasks /> },
+  { 
+    key: "Backlogs", 
+    label: "Backlogs", 
+    icon: <ClipboardList size={16} />, 
+    component: <Backlog setActiveTab={setActiveTab} /> 
+  },
+  { key: "Salary Report", label: "Salary Report", icon: <Receipt size={16} />, component: <Salary /> },
+  { key: "Punching Report", label: "Punching Report", icon: <Clock size={16} />, component: <Punching /> },
+  { key: "Task Report", label: "Task Report", icon: <FileText size={16} />, component: <TaskReport /> } // ← New tab
+];
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "1rem" }}>
